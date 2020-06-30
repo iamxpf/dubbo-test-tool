@@ -1,6 +1,7 @@
 
 server:
   port: 9000
+
 spring:
   redis:
     host: 127.0.0.1
