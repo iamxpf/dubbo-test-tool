@@ -85,11 +85,6 @@ public class ConnectHandler implements Serializable {
         return list;
     }
 
-    public void close() {
-        registry.destroy();
-    }
 
-    public boolean isAvailable() {
-        return registry.isAvailable();
-    }
+
 }

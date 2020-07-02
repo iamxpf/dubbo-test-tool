@@ -2,8 +2,10 @@ package com.xpf.dubbo.dubbotool.service;
 
 import java.util.List;
 
+import com.xpf.dubbo.dubbotool.dto.ResultDTO;
+import com.xpf.dubbo.dubbotool.vo.AchieveVO;
 import com.xpf.dubbo.dubbotool.vo.GroupVO;
-import com.xpf.dubbo.dubbotool.vo.InterfaceVo;
+import com.xpf.dubbo.dubbotool.vo.InterfaceVO;
 import com.xpf.dubbo.dubbotool.vo.RegistryVO;
 
 /**
@@ -15,5 +17,7 @@ public interface IDubboService {
 
     List<String> listInterface(GroupVO vo) throws NoSuchFieldException, IllegalAccessException;
 
-    List<String> listMethod(InterfaceVo vo) throws NoSuchFieldException, IllegalAccessException;
+    List<String> listMethod(InterfaceVO vo) throws NoSuchFieldException, IllegalAccessException;
+
+    ResultDTO<Object> doAchieve(AchieveVO vo) throws NoSuchFieldException, IllegalAccessException;
 }

@@ -17,8 +17,9 @@ import com.alibaba.dubbo.remoting.zookeeper.ZookeeperClient;
 import com.alibaba.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import com.xpf.dubbo.dubbotool.dto.ResultDTO;
 import com.xpf.dubbo.dubbotool.service.IDubboService;
+import com.xpf.dubbo.dubbotool.vo.AchieveVO;
 import com.xpf.dubbo.dubbotool.vo.GroupVO;
-import com.xpf.dubbo.dubbotool.vo.InterfaceVo;
+import com.xpf.dubbo.dubbotool.vo.InterfaceVO;
 import com.xpf.dubbo.dubbotool.vo.RegistryVO;
 
 /**
@@ -57,7 +58,7 @@ public class DubboController {
     }
 
     @RequestMapping("/listMethod")
-    public ResultDTO<Object> listMethod(@RequestBody InterfaceVo vo) {
+    public ResultDTO<Object> listMethod(@RequestBody InterfaceVO vo) {
         List<String> list;
         try {
             list = dubboService.listMethod(vo);
@@ -68,6 +69,11 @@ public class DubboController {
         return ResultDTO.createSuccess("", list);
     }
 
+    @RequestMapping("/doAchieve")
+    public ResultDTO<Object> doAchieve(@RequestBody AchieveVO vo) throws NoSuchFieldException, IllegalAccessException {
+        ResultDTO<Object> result = dubboService.doAchieve(vo);
+        return result;
+    }
 
 
     public static void main(String[] args) throws Exception {

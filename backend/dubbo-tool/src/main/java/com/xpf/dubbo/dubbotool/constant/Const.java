@@ -33,4 +33,9 @@ public class Const {
      */
     public static final String ZOOKEEPER_ROOT = "/";
 
+
+    public static final String APPLICATION_NAME = "DUBBO-TOOL";
+
+
+
 }

@@ -4,9 +4,9 @@ import lombok.Data;
 
 /**
  * @author: xia.pengfei
- * @date: 2020/6/30
+ * @date: 2020/7/2
  */
 @Data
-public class InterfaceVO extends GroupVO {
-    private String serviceUrl;
+public class MethodVO extends InterfaceVO{
+    private String method;
 }

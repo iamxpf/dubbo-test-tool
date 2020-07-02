@@ -17,6 +17,8 @@ public class ConnectHandlerCache {
 
     public static ConnectHandler getConnectHandler(ZookeeperDTO dto)
         throws NoSuchFieldException, IllegalAccessException {
+        //不加分组是为了第一次连接zk后查询有哪些节点
+        //选择分组后，是为了lookup查找对应节点下接口提供者url信息，不然在默认dubbo分组下查不到提供者url信息
         ConnectHandler connectHandler = map.get(dto.toString());
         if (connectHandler == null) {
             Map<String, String> params = new HashMap<>();
