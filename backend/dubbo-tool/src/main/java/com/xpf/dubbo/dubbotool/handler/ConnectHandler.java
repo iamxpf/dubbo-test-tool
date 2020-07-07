@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.registry.zookeeper.ZookeeperRegistry;
@@ -62,11 +63,11 @@ public class ConnectHandler implements Serializable {
     }
 
     public List<String> getGroup() {
-        return zkClient.getChildren(Const.ZOOKEEPER_ROOT);
+        return zkClient.getChildren(Const.ZOOKEEPER_ROOT).stream().sorted().collect(Collectors.toList());
     }
 
     public List<String> getInterfaces(String group) {
-        return zkClient.getChildren(Const.ZOOKEEPER_ROOT + group);
+        return zkClient.getChildren(Const.ZOOKEEPER_ROOT + group).stream().sorted().collect(Collectors.toList());
     }
 
     public List<String> getMethod(String serviceUrl) {
@@ -82,7 +83,7 @@ public class ConnectHandler implements Serializable {
         });
         List<String> list = new ArrayList<>();
         list.addAll(methodSet);
-        return list;
+        return list.stream().sorted().collect(Collectors.toList());
     }
 
 
