@@ -21,19 +21,23 @@ import lombok.extern.slf4j.Slf4j;
 public class LogRecord {
 
     @Pointcut("@within(SelLog) || @annotation(SelLog)")
-    private void doLog(){}
+    private void doLog() {
+    }
 
     @Around("doLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("method:{} start,params:{}", joinPoint.getSignature().getName(), JSON.toJSONString(joinPoint.getArgs()));
+        log.debug("class:{},method:{} start,params:{}", joinPoint.getSignature().getClass(),
+            joinPoint.getSignature().getName(), JSON.toJSONString(joinPoint.getArgs()));
         Object result = joinPoint.proceed();
-        log.debug("method:{} end,result:{} ", joinPoint.getSignature().getName(), result);
+        log.debug("class:{},method:{} end,result:{} ", joinPoint.getSignature().getClass(),
+            joinPoint.getSignature().getName(), result);
         return result;
     }
 
     @AfterThrowing(value = "doLog()", throwing = "e")
-    public void doAfterThrowing(JoinPoint joinPoint,Exception e) {
-        log.debug("exception:{}", e);
+    public void doAfterThrowing(JoinPoint joinPoint, Exception e) {
+        log.debug("class:{},method:{},exception:{}", joinPoint.getSignature().getClass(),
+            joinPoint.getSignature().getName(), e);
     }
 
 }
