@@ -14,6 +14,8 @@
     <name>dubbo-tool</name>
     <description>Demo project for Spring Boot</description>
 
+    <packaging>jar</packaging>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -64,6 +66,16 @@
             <version>0.11</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.72</version>
+        </dependency>
 
     </dependencies>
 

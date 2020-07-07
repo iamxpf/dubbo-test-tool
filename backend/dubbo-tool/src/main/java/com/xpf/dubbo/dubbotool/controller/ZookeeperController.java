@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xpf.dubbo.dubbotool.annotation.SelLog;
 import com.xpf.dubbo.dubbotool.dto.ResultDTO;
 import com.xpf.dubbo.dubbotool.service.IZookeeperService;
 import com.xpf.dubbo.dubbotool.vo.RegistryVO;
@@ -17,6 +18,7 @@ import com.xpf.dubbo.dubbotool.vo.RegistryVO;
  */
 @RestController
 @RequestMapping("/zk")
+@SelLog
 public class ZookeeperController {
 
     @Autowired

@@ -12,5 +12,5 @@ import lombok.Data;
 @Data
 public class ParamVO {
     private String paramType;
-    private Map<String, String> paramContext;
+    private Object paramContext;
 }
