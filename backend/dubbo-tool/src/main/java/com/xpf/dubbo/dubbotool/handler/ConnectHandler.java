@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.registry.zookeeper.ZookeeperRegistry;
+import org.apache.dubbo.remoting.zookeeper.ZookeeperClient;
+import org.apache.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import org.springframework.util.CollectionUtils;
 
 import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry;
-import com.alibaba.dubbo.remoting.zookeeper.ZookeeperClient;
-import com.alibaba.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import com.xpf.dubbo.dubbotool.constant.Const;
 
 /**

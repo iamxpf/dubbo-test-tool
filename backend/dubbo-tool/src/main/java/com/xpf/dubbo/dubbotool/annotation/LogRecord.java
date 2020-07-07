@@ -26,17 +26,17 @@ public class LogRecord {
 
     @Around("doLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("class:{},method:{} start,params:{}", joinPoint.getSignature().getClass(),
+        log.debug("class:{},method:{} start,params:{}", joinPoint.getTarget().getClass(),
             joinPoint.getSignature().getName(), JSON.toJSONString(joinPoint.getArgs()));
         Object result = joinPoint.proceed();
-        log.debug("class:{},method:{} end,result:{} ", joinPoint.getSignature().getClass(),
+        log.debug("class:{},method:{} end,result:{} ", joinPoint.getTarget().getClass(),
             joinPoint.getSignature().getName(), result);
         return result;
     }
 
     @AfterThrowing(value = "doLog()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Exception e) {
-        log.debug("class:{},method:{},exception:{}", joinPoint.getSignature().getClass(),
+        log.debug("class:{},method:{},exception:{}", joinPoint.getTarget().getClass(),
             joinPoint.getSignature().getName(), e);
     }
 

@@ -1,20 +1,12 @@
 package com.xpf.dubbo.dubbotool.controller;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry;
-import com.alibaba.dubbo.remoting.zookeeper.ZookeeperClient;
-import com.alibaba.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import com.xpf.dubbo.dubbotool.annotation.SelLog;
 import com.xpf.dubbo.dubbotool.dto.ResultDTO;
 import com.xpf.dubbo.dubbotool.service.IDubboService;
@@ -77,6 +69,7 @@ public class DubboController {
             ResultDTO<Object> result = dubboService.doAchieve(vo);
             return result;
         } catch (Exception e) {
+            e.printStackTrace();
             return ResultDTO.createError(e.getMessage(), e);
         }
     }

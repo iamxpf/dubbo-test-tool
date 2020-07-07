@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.dubbo.common.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.xpf.dubbo.dubbotool.constant.Const;
 import com.xpf.dubbo.dubbotool.dto.ResultDTO;
 import com.xpf.dubbo.dubbotool.service.IZookeeperService;
