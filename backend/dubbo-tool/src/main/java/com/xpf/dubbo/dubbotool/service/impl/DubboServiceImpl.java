@@ -11,6 +11,7 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.utils.ReferenceConfigCache;
 import org.apache.dubbo.rpc.service.GenericService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.common.Constants;
@@ -33,10 +34,13 @@ import com.xpf.dubbo.dubbotool.vo.RegistryVO;
 @Service
 public class DubboServiceImpl implements IDubboService {
 
+    @Autowired
+    private ConnectHandlerCache connectHandlerCache;
+
     @Override
     public List<String> listGroup(RegistryVO vo) throws NoSuchFieldException, IllegalAccessException {
         ZookeeperDTO dto = ParamUtil.dealConVo(vo);
-        ConnectHandler connectHandler = ConnectHandlerCache.getConnectHandler(dto);
+        ConnectHandler connectHandler = connectHandlerCache.getConnectHandler(dto);
         return connectHandler.getGroup();
     }
 
@@ -44,7 +48,7 @@ public class DubboServiceImpl implements IDubboService {
     public List<String> listInterface(GroupVO vo) throws NoSuchFieldException, IllegalAccessException {
         ZookeeperDTO dto = ParamUtil.dealConVo(vo);
         dto.setGroup(vo.getGroup());
-        ConnectHandler connectHandler = ConnectHandlerCache.getConnectHandler(dto);
+        ConnectHandler connectHandler = connectHandlerCache.getConnectHandler(dto);
         return connectHandler.getInterfaces(dto.getGroup());
     }
 
@@ -52,12 +56,22 @@ public class DubboServiceImpl implements IDubboService {
     public List<String> listMethod(InterfaceVO vo) throws NoSuchFieldException, IllegalAccessException {
         ZookeeperDTO dto = ParamUtil.dealConVo(vo);
         dto.setGroup(vo.getGroup());
-        ConnectHandler connectHandler = ConnectHandlerCache.getConnectHandler(dto);
+        ConnectHandler connectHandler = connectHandlerCache.getConnectHandler(dto);
         return connectHandler.getMethod(vo.getServiceUrl());
     }
 
     @Override
     public ResultDTO<Object> doAchieve(AchieveVO vo){
+        GenericService genericService = getGenericService(vo);
+
+        // 如果返回POJO将自动转成Map
+        String[] paramTypes = vo.getParams() == null? null : vo.getParams().stream().map(e -> e.getParamType()).toArray(String[]::new);
+        Object[] paramsContext = vo.getParams() == null? null : vo.getParams().stream().map(e -> e.getParamContext()).toArray();
+        Object result = genericService.$invoke(vo.getMethod(), paramTypes, paramsContext);
+        return ResultDTO.createSuccess("", result);
+    }
+
+    private GenericService getGenericService(AchieveVO vo) {
         ApplicationConfig application = new ApplicationConfig();
         application.setName(Const.APPLICATION_NAME);
 
@@ -77,17 +91,12 @@ public class DubboServiceImpl implements IDubboService {
         reference.setRegistry(registry);
 
         // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
-//        GenericService genericService = reference.get();
+        //        GenericService genericService = reference.get();
         ReferenceConfigCache cache = ReferenceConfigCache.getCache(Const.APPLICATION_NAME, CACHE_KEY_GENERATOR);
-        GenericService genericService = cache.get(reference);
-
-        // 如果返回POJO将自动转成Map
-        String[] paramTypes = vo.getParams() == null? null : vo.getParams().stream().map(e -> e.getParamType()).toArray(String[]::new);
-        Object[] paramsContext = vo.getParams() == null? null : vo.getParams().stream().map(e -> e.getParamContext()).toArray();
-        Object result = genericService.$invoke(vo.getMethod(), paramTypes, paramsContext);
-        return ResultDTO.createSuccess("", result);
+        return cache.get(reference);
     }
-    public ReferenceConfigCache.KeyGenerator CACHE_KEY_GENERATOR = referenceConfig -> {
+
+    private ReferenceConfigCache.KeyGenerator CACHE_KEY_GENERATOR = referenceConfig -> {
         String iName = referenceConfig.getInterface();
         if(StringUtils.isBlank(iName)) {
             Class<?> clazz = referenceConfig.getInterfaceClass();
