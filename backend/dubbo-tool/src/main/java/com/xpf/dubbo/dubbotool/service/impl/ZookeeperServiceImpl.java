@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.apache.dubbo.common.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.xpf.dubbo.dubbotool.constant.Const;
@@ -25,13 +26,16 @@ public class ZookeeperServiceImpl implements IZookeeperService {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Value("${zk.registry.timeout}")
+    private long zkTimeOut;
+
     @Override
     public ResultDTO<RegistryVO> addRegistry(RegistryVO vo) {
         boolean exit = redisUtil.hHasKey(Const.REGISTRY_KEY, vo.getName());
         if (exit) {
             return ResultDTO.createError(vo.getName() + " has exit.", vo);
         }
-        redisUtil.hset(Const.REGISTRY_KEY, vo.getName(), vo.getUrl());
+        redisUtil.hset(Const.REGISTRY_KEY, vo.getName(), vo.getUrl(), zkTimeOut);
         return ResultDTO.createSuccess(vo.getName() + " add success.", vo);
     }
 
