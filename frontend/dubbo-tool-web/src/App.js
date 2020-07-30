@@ -249,7 +249,7 @@ class App extends React.Component {
                 //filterOption={false}
                 filterOption = {(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 //onSearch={this.handleSearch}
-                notFoundContent={null}
+                //notFoundContent={null}
                 //style={{ width: 240 }}
                 placeholder="请输入ZK地址"
                 dropdownRender={menu => (
