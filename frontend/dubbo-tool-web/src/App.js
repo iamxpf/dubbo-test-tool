@@ -171,7 +171,9 @@ class App extends React.Component {
           };
 		  if (param.params) {
 			for (var i = 0; i < param.params.length; i++) {
-				param.params[i].paramContext = JSON.parse(param.params[i].paramContext);
+				if (param.params[i].paramContext.indexOf("{")>-1) {
+					param.params[i].paramContext = JSON.parse(param.params[i].paramContext);
+				}
 			  }  
 		  }
 		  
